@@ -22,8 +22,6 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.dropbox.chooser.android.R;
-
 class AppStoreInterstitial {
     public static final String DIALOG_TAG = "com.dropbox.chooser.android.DIALOG";
     private static final String DROPBOX_PACKAGE_NAME = "com.dropbox.android";
@@ -32,7 +30,7 @@ class AppStoreInterstitial {
     public static void showInterstitial(ActivityLike thing) {
         if (thing.getSupportFragmentManager() != null) {
             SupportFragment frag = SupportFragment.newInstance();
-            android.support.v4.app.FragmentManager fm = thing.getSupportFragmentManager();
+            androidx.core.app.FragmentManager fm = thing.getSupportFragmentManager();
             frag.show(fm, DIALOG_TAG);
         } else {
             NativeFragment frag = NativeFragment.newInstance();
@@ -81,7 +79,7 @@ class AppStoreInterstitial {
         }
     }
 
-    public static class SupportFragment extends android.support.v4.app.DialogFragment {
+    public static class SupportFragment extends androidx.core.app.DialogFragment {
         public static SupportFragment newInstance() {
             return new SupportFragment();
         }
