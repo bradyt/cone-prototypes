@@ -9,9 +9,12 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class MainActivity extends FlutterActivity {
+  private static final String CHANNEL = "samples.flutter.dev/dropbox";
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     GeneratedPluginRegistrant.registerWith(this);
 
     new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(
@@ -33,8 +36,9 @@ public class MainActivity extends FlutterActivity {
                 });
 
 
-    private String getDropboxStuff() {
-      return "hello world";
-    }
+  }
+
+  private String getDropboxStuff() {
+    return "hello world";
   }
 }
