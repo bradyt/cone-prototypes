@@ -30,11 +30,11 @@ import android.os.Parcelable;
  *       .limitToExtensions(".png", ".jpg", ".jpeg")
  *       .launch(this, CHOOSER_REQUEST_CODE);
  * </pre></blockquote></p>
- * 
+ *
  * <p>
  * The result will be received in the onActivityResult callback of the Activity or Fragment supplied to {@link DbxChooser#launch}.
  * </p>
- * 
+ *
  */
 public class DbxChooser {
 
@@ -76,7 +76,7 @@ public class DbxChooser {
         }
         mAppKey = appKey;
     }
-    
+
 
     private static boolean isChooserAvailable(PackageManager pm) {
         ResultType[] resultTypes = { ResultType.FILE_CONTENT, ResultType.PREVIEW_LINK, ResultType.DIRECT_LINK };
@@ -183,7 +183,7 @@ public class DbxChooser {
      * The result will be received in the onActivityResult callback of the
      * supplied Fragment. If the supplied Fragment is not attached to an Activity,
      * this will throw an IllegalStateException.
-     * 
+     *
      * NOTE: this method requires Android API at least version 11.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

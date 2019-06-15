@@ -38,7 +38,7 @@
             android:textColor="#ffffff"
             android:textSize="@dimen/dbx_action_bar_title_text_size" >
         </TextView>
-        
+
         <View
             android:id="@+id/dbx_separator"
             android:layout_width="fill_parent"
