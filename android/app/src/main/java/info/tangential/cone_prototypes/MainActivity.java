@@ -1,4 +1,4 @@
-package com.example.cone_prototypes;
+package info.tangential.cone_prototypes;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
