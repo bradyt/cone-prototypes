@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:cone_prototypes/channel.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -21,11 +23,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String _uri;
 
-  void _incrementCounter() {
+  Future getUri() async {
+    var uri = await UriPicker.pickUri();
+
     setState(() {
-      _counter++;
+      _uri = uri;
     });
   }
 
@@ -43,15 +47,15 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+              '$_uri',
               style: Theme.of(context).textTheme.display1,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: getUri,
+        tooltip: 'Get URI',
         child: Icon(Icons.add),
       ),
     );
