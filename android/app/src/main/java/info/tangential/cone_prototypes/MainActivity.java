@@ -1,5 +1,7 @@
 package info.tangential.cone_prototypes;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import io.flutter.app.FlutterActivity;
@@ -16,6 +18,8 @@ import java.util.TimeZone;
 
 public class MainActivity extends FlutterActivity {
   private static final String CHANNEL = "cone_prototypes.tangential.info/pick_uri";
+  private static final int READ_REQUEST_CODE = 1;
+  Result channelResult;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -26,16 +30,30 @@ public class MainActivity extends FlutterActivity {
     new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(new MethodCallHandler() {
       @Override
       public void onMethodCall(MethodCall call, Result result) {
+        channelResult = result;
         if (call.method.equals("pickUri")) {
-          String now = now();
-          Log.i("pickUri", now);
-          result.success(now);
+          performFileSearch();
         } else {
           Log.i("pickUri", "Method " + call.method + " did not equal anything");
           result.notImplemented();
         }
       }
     });
+  }
+
+  public void performFileSearch() {
+    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+    intent.setType("*/*");
+    startActivityForResult(intent, READ_REQUEST_CODE);
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+    if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+      String now = now();
+      Log.i("pickUri", now);
+      channelResult.success(now);
+    }
   }
 
   String now() {
