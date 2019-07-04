@@ -2,6 +2,7 @@ package info.tangential.cone_prototypes;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import io.flutter.app.FlutterActivity;
@@ -43,6 +44,7 @@ public class MainActivity extends FlutterActivity {
 
   public void performFileSearch() {
     Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+    intent.addCategory(Intent.CATEGORY_OPENABLE);
     intent.setType("*/*");
     startActivityForResult(intent, READ_REQUEST_CODE);
   }
@@ -50,9 +52,14 @@ public class MainActivity extends FlutterActivity {
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
     if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-      String now = now();
-      Log.i("pickUri", now);
-      channelResult.success(now);
+      Uri uri = null;
+      if (resultData != null) {
+        uri = resultData.getData();
+        String now = now();
+        Log.i("pickUri", now);
+        Log.i("pickUri", uri.decode(uri.toString()));
+        channelResult.success(now);
+      }
     }
   }
 
