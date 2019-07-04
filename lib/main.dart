@@ -23,7 +23,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _uri;
+  Map<dynamic, dynamic> _uri;
 
   Future getUri() async {
     var uri = await UriPicker.pickUri();
@@ -35,23 +35,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Uri blah = (_uri == null) ? null : Uri.tryParse(_uri['uri']);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: ListView(
+        children: <Widget>[
+          Card(
+            child: ListTile(
+              title: Text(
+                (blah != null)
+                    ? '${blah.fragment.toString()}'
+                    : null.toString(),
+                style: Theme.of(context).textTheme.display1,
+              ),
             ),
-            Text(
-              '$_uri',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getUri,
