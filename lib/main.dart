@@ -24,12 +24,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Map<dynamic, dynamic> _uri;
+  bool _isExpanded = false;
+  String expandedValue;
+  String headerValue;
 
   Future getUri() async {
     var uri = await UriPicker.pickUri();
 
     setState(() {
       _uri = uri;
+      headerValue = uri['displayName'];
+      expandedValue = uri['uri'];
     });
   }
 
@@ -40,19 +45,39 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView(
-        children: <Widget>[
-          Card(
-            child: ListTile(
-              title: Text(
-                (blah != null)
-                    ? '${blah.fragment.toString()}'
-                    : null.toString(),
-                style: Theme.of(context).textTheme.display1,
+      body: SingleChildScrollView(
+        child: Card(
+          child: ExpansionPanelList(
+            expansionCallback: (int index, bool isExpanded) {
+              setState(
+                () {
+                  _isExpanded = !isExpanded;
+                },
+              );
+            },
+            children: <ExpansionPanel>[
+              ExpansionPanel(
+                headerBuilder: (BuildContext context, bool isExpanded) =>
+                    ListTile(
+                      title: Text(
+                        (_uri != null) ? _uri['displayName'] : null.toString(),
+                      ),
+                    ),
+                canTapOnHeader: true,
+                body: Column(
+                  children: <Widget>[
+                    ListTile(
+                      title: Text(
+                        (blah != null) ? '${blah.toString()}' : null.toString(),
+                      ),
+                    ),
+                  ],
+                ),
+                isExpanded: _isExpanded,
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getUri,
