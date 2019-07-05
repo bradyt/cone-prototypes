@@ -2,6 +2,7 @@ package info.tangential.cone_prototypes;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -14,7 +15,13 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.Exception;
+import java.lang.StringBuilder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,11 +73,11 @@ public class MainActivity extends FlutterActivity {
       HashMap<String, String> result = new HashMap<String, String>();
       if (resultData != null) {
         uri = resultData.getData();
-        Cursor cursor = this.getContentResolver().query(uri, null, null, null, null, null);
+        ContentResolver contentResolver = this.getContentResolver();
+        Cursor cursor = contentResolver.query(uri, null, null, null, null, null);
         try {
           if (cursor != null && cursor.moveToFirst()) {
             displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-            Log.i("metadata", "Display Name: " + displayName);
 
             sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
             String size = null;
@@ -79,14 +86,43 @@ public class MainActivity extends FlutterActivity {
             } else {
               size = "Unknown";
             }
-            Log.i("metadata", "Size: " + size);
           }
         } finally {
           cursor.close();
         }
+
+        try {
+          Log.i("trace", "94");
+          InputStream inputStream = contentResolver.openInputStream(uri);
+          OutputStream outputStream = contentResolver.openOutputStream(uri);
+          Log.i("trace", "96");
+          StringBuilder stringBuilder = new StringBuilder();
+          Log.i("trace", "98");
+          BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+          Log.i("trace", "100");
+          String line;
+          Log.i("trace", "102");
+          while ((line = reader.readLine()) != null) {
+            stringBuilder.append(line);
+          }
+          Log.i("trace", "106");
+          inputStream.close();
+          Log.i("trace", "108");
+          result.put("contents", stringBuilder.toString());
+          Log.i("trace", "110");
+        } catch (FileNotFoundException e) {
+          result.put("contents", e.toString());
+          Log.i("FNFE", e.toString());
+        } catch (Exception e) {
+          Log.i("E", e.toString());
+        }
+
         result.put("uri", uri.decode(uri.toString()));
         result.put("displayName", displayName);
         result.put("sizeIndex", Integer.toString(sizeIndex));
+        result.put("authority", uri.getAuthority());
+        result.put("path", uri.getPath());
+        result.put("mimeType", contentResolver.getType(uri));
         channelResult.success(result);
       }
     }

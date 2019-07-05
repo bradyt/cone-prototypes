@@ -59,7 +59,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ExpansionPanel(
                 headerBuilder: (BuildContext context, bool isExpanded) =>
                     ListTile(
-                      title: Text(
+                      title: Text('Display name'),
+                      subtitle: Text(
                         (_uri != null) ? _uri['displayName'] : null.toString(),
                       ),
                     ),
@@ -67,8 +68,33 @@ class _MyHomePageState extends State<MyHomePage> {
                 body: Column(
                   children: <Widget>[
                     ListTile(
-                      title: Text(
+                      title: Text('Authority'),
+                      subtitle: Text(
+                        (_uri != null) ? _uri['authority'] : null.toString(),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('Path'),
+                      subtitle: Text(
+                        (_uri != null) ? _uri['path'] : null.toString(),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('Uri'),
+                      subtitle: Text(
                         (blah != null) ? '${blah.toString()}' : null.toString(),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('MIME type'),
+                      subtitle: Text(
+                        (_uri != null) ? _uri['mimeType'] : null.toString(),
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('Contents'),
+                      subtitle: Text(
+                        (_uri != null) ? _uri['contents'] : null.toString(),
                       ),
                     ),
                   ],
