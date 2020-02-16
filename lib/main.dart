@@ -23,6 +23,7 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             TextField(
+              autofocus: true,
               textInputAction: TextInputAction.next,
             ),
             TextField(),
