@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final TextField secondTextField = TextField();
     return Scaffold(
       appBar: AppBar(
         title: Text('focus test'),
@@ -25,8 +26,10 @@ class MyHomePage extends StatelessWidget {
             TextField(
               autofocus: true,
               textInputAction: TextInputAction.next,
+              onSubmitted: (_) => FocusScope.of(context)
+                  .requestFocus(secondTextField.focusNode),
             ),
-            TextField(),
+            secondTextField,
           ],
         ),
       ),
